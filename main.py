@@ -13,16 +13,30 @@ def main():
     if len(sys.argv) < 2:
         raise  IndexError("No prompt provided")
 
+    args = []
+    verbose = False
+    for arg in sys.argv[1:]:
+        if not arg.startswith('--'):
+            args.append(arg)
+        elif arg == "--verbose":
+            verbose = True
     
-
-    prompt = sys.argv[1:]
-    messages = [types.Content(role="user", parts=[types.Part(text=prompt[0])]),]
+    prompt = " ".join(args)
+    
+    messages = [types.Content(role="user", parts=[types.Part(text=prompt)]),]
     response = client.models.generate_content(model='gemini-2.0-flash-001', contents=messages)
-    if "--verbose" in prompt:
-        print(f"User prompt: {prompt[0]}")
+
+    make_response(prompt, response, verbose)
+
+def make_response(prompt, response, verbose):    
+    if verbose:
+        print(f"User prompt: {prompt} \n")
+        print(response.text)
         print(f"Prompt tokens: {response.usage_metadata.prompt_token_count}")
         print(f"Response tokens: {response.usage_metadata.candidates_token_count}")
-    
-    print(response.text)
+    else:
+        print(response.text)
+        
+
 if __name__ == "__main__":
     main()
