@@ -1,21 +1,15 @@
-from functions.get_files_info import get_files_info
-
+#from functions.get_files_info import get_files_info
+from functions.run_python_file import run_python_file
 
 def tests():
-    test_cases = [".", "pkg", "/bin", "../"]
-
-    for case in test_cases:
-        if case == ".":
-            print(f'Result for current directory:')
-        else:
-            print(f"Result for '{case}' directory:")
-        test_result = get_files_info('calculator', case)
-        if test_result.startswith('Error:'):
-            print(f'    {test_result}')
-        else:
-            file_conts = test_result.split("\n")
-            for line in file_conts:
-                print(f' {line}')
-if __name__ == "__main__":
-    tests()
+    print(run_python_file("calculator", "main.py"))
+    print(run_python_file("calculator", "main.py", ["3 + 5"]))
+    print(run_python_file("calculator", "tests.py"))
+    print(run_python_file("calculator", "../main.py"))
+    print(run_python_file("calculator", "nonexistent.py"))
+    print(run_python_file("calculator", "lorem.txt"))
         
+
+        
+if __name__ == "__main__":
+    tests()       
